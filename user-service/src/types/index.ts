@@ -187,12 +187,14 @@ export interface IDriver extends Document {
 }
 
 
-export interface UserRegistrationRequest extends Request{
-  name: string;
-  email: string;
-  phone?: string;
-  password: string;
-  location:{
-    coordinates : [number, number]
+export interface UserRegisterRequest extends Request {
+  body: {
+    name: string;
+    email: string;
+    phone?: string;
+    password: string;
+    location: {
+      coordinates: [number, number]
+    }
   }
 }
