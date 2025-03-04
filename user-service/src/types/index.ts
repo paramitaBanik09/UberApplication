@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { Document } from "mongoose";
 
 // User roles
@@ -183,4 +184,15 @@ export interface IDriver extends Document {
     lastActiveDate: Date;
     onlineHours: number;
   };
+}
+
+
+export interface UserRegistrationRequest extends Request{
+  name: string;
+  email: string;
+  phone?: string;
+  password: string;
+  location:{
+    coordinates : [number, number]
+  }
 }
