@@ -3,31 +3,21 @@ import { UserService } from "../../services/user-service/user-service";
 import { StatusCodes } from "http-status-codes";
 import { UserRegisterRequest } from "../../types";
 import { errorResponse, GlobalErrorHandler } from "../../utils";
+import Driver from "../../models/driver/driver.model";
+import User from "../../models/user/user.model";
 
 export class UserController {
     constructor(private readonly userService: UserService) { }
 
-    async getUserDtl(req: UserRegisterRequest, res: Response) {
+    async register(req: UserRegisterRequest, res: Response) {
         try {
-            const { email, location, name, password, phone } = req?.body
-            if (!email || !name || !password || !phone) {
-                errorResponse.message = "Please enter valid credentials to register yourself"
-                errorResponse.statusCode = StatusCodes.BAD_REQUEST
-                errorResponse.error.stack = {
-                    message: "Please enter valid credentials to register yourself",
-                    statusCode: StatusCodes.BAD_REQUEST,
-                    error: "Bad user Request"
-                }
-                throw new GlobalErrorHandler(errorResponse)
-            }
-            const output = await this.userService.getUserDtl(req, res)
-            if (output) {
-                res.status(StatusCodes.OK).json({
-                    output: "Success"
-                })
-            }
+            const result = await this.userService.register(req,res)
+            console.log(result)
+            return res.status(StatusCodes.OK).json({
+              output: result
+            })
         } catch (error) {
-            res.status(StatusCodes.BAD_REQUEST).send(error)
+            return res.status(StatusCodes.BAD_REQUEST).send(error)
         }
     }
 

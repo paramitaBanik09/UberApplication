@@ -14,5 +14,5 @@ const userService = new UserService(usrRepo)
 const userController = new UserController(userService)
 
 userRouter.post("/register", async (req: Request, res: Response) => {
-  await userController.getUserDtl(req as UserRegisterRequest, res)
+  await userController.register(req as UserRegisterRequest, res)
 })
