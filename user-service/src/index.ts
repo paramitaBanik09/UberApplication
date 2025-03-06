@@ -1,7 +1,7 @@
-import express, { request, response } from "express"
+import express from "express"
 import { config } from "./config"
-import { apiRouter } from "./routes"
 import { dbConnectivity } from "./database/connection"
+import { apiRouter } from "./routes"
 
 
 const { server_config } = config
@@ -17,5 +17,5 @@ server.use("/api", apiRouter)
 
 
 server.listen(PORT, () => {
-    console.log("Server running at", PORT)
+     console.log("Server running at", PORT)
 })
