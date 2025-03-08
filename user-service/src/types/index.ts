@@ -107,7 +107,7 @@ export interface IUser extends Document {
     type: string;
     coordinates: number[];
   };
-  comparePassword(candidatePassword: string): Promise<boolean>;
+  comparePassword(candidatePassword: string,actualPassword:string): Promise<boolean>;
 }
 
 // Driver interface for driver-specific data
@@ -196,5 +196,12 @@ export interface UserRegisterRequest extends Request {
     location: {
       coordinates: [number, number]
     }
+  }
+}
+
+export interface loginRequest extends Request{
+  body:{
+    email: string,
+    password: string
   }
 }

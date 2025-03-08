@@ -35,7 +35,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, VALIDATION_MESSAGES.PASSWORD_REQUIRED],
     minlength: [8, VALIDATION_MESSAGES.PASSWORD_MIN_LENGTH],
-    select: false // Don't return password by default in queries
+   // select: false // Don't return password by default in queries
   },
   [USER_FIELDS.ROLE]: { 
     type: String, 
@@ -97,8 +97,8 @@ userSchema.pre('save', async function(next) {
 });
 
 // Instance method to compare passwords
-userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
-  return argon2.verify(this.password, candidatePassword);
+userSchema.methods.comparePassword = async function(candidatePassword: string,actualPassword: string): Promise<boolean> {
+  return argon2.verify(actualPassword, candidatePassword);
 };
 
 const User = model<IUser>("User", userSchema);
