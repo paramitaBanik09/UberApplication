@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
+import { config } from "../../config";
 import User from "../../models/user/user.model";
 import { UserRegisterRequest } from "../../types";
-import { config } from "../../config"
 const { logger } = config
 
 export class UserRepo {

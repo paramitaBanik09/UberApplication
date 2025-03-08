@@ -1,12 +1,11 @@
-import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import jwt, { SignOptions } from "jsonwebtoken";
+import { Types } from "mongoose";
+import { config } from "../../config";
 import User from "../../models/user/user.model";
 import { UserRepo } from "../../repositories/user-repo/user-repo";
 import { loginRequest, UserRegisterRequest } from "../../types";
 import { errorResponse, GlobalErrorHandler } from "../../utils";
-import { Types } from "mongoose"
-import { config } from "../../config"
-import jwt, { SignOptions } from "jsonwebtoken"
 import { errorStructure } from "../../utils/Helper/helperFunction";
 
 const { server_config, logger } = config
@@ -18,7 +17,7 @@ export class UserService {
         logger.info("Inside User Register Service")
         try {
             const { email, location, name, password, phone } = req.body
-            if (!email || !name || !password || !phone) {
+            if (!email || !name || !password || !phone || !location) {
                 throw new GlobalErrorHandler(errorStructure("Please enter valid credentials to register yourself", StatusCodes.BAD_REQUEST, "Bad user Request"))
             }
             //UserAccount validation

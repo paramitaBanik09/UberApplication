@@ -1,5 +1,5 @@
-import { createLogger, format, transports } from "winston"
-import { server_config } from "./server-config"
+import { createLogger, format, transports } from "winston";
+import { server_config } from "./server-config";
 const { NODE_ENV } = server_config
 
 export const logger = createLogger({
@@ -18,7 +18,7 @@ export const logger = createLogger({
         format.colorize(),
         format.simple(),
         format.printf(({ level, message, timestamp }) => {
-          return `${timestamp} ${level}: ${message}`;
+          return `${JSON.stringify(timestamp)} ${level}: ${JSON.stringify(message)}`;
         }),
       ),
     }),

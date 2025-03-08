@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
+import { config } from "../../../config";
 import { controllers } from "../../../controllers";
 import { repositories } from "../../../repositories";
 import { services } from "../../../services";
 import { loginRequest, UserRegisterRequest } from "../../../types";
-import { config } from "../../../config"
 
 export const userRouter = Router();
 const { UserController } = controllers
