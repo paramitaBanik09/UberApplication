@@ -34,7 +34,7 @@ const userSchema = new Schema({
   [USER_FIELDS.PASSWORD]: {
     type: String,
     required: [true, VALIDATION_MESSAGES.PASSWORD_REQUIRED],
-    minlength: [8, VALIDATION_MESSAGES.PASSWORD_MIN_LENGTH],
+    minlength: [1, VALIDATION_MESSAGES.PASSWORD_MIN_LENGTH],
    // select: false // Don't return password by default in queries
   },
   [USER_FIELDS.ROLE]: { 

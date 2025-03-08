@@ -14,6 +14,6 @@ const driverController = new DriverController(driverService)
 export const driverRouter = Router();
 
 
-driverRouter.post("register", async (req: Request, res: Response) => {
-  await driverController.registerDriver(req as DriverRegisterRequest);
+driverRouter.post("/register", async (req: Request, res: Response) => {
+  await driverController.registerDriver(req as DriverRegisterRequest,res);
 })

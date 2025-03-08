@@ -5,7 +5,7 @@ import { errorHandeler } from "./middleware/error-handeler"
 import { apiRouter } from "./routes"
 
 
-const { server_config,logger } = config
+const { server_config, logger } = config
 const { PORT } = server_config
 
 const server = express()
@@ -18,5 +18,5 @@ server.use(errorHandeler)
 server.use("/api", apiRouter)
 
 server.listen(PORT, () => {
-     logger.debug(`Server is running on port ${PORT}`)
+     logger.info(`Server is running on port ${PORT}`)
 })  

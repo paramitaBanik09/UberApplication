@@ -108,7 +108,7 @@ export interface IUser extends Document {
     type: string;
     coordinates: number[];
   };
-  comparePassword(candidatePassword: string,actualPassword:string): Promise<boolean>;
+  comparePassword(candidatePassword: string, actualPassword: string): Promise<boolean>;
 }
 
 // Driver interface for driver-specific data
@@ -200,16 +200,93 @@ export interface UserRegisterRequest extends Request {
   }
 }
 
-export interface LoginRequest extends Request{
-  body:{
+export interface LoginRequest extends Request {
+  body: {
     email: string,
     password: string
   }
 }
 
 
-export interface DriverRegisterRequest extends Request{
-  body:{
-
+export interface DriverRegisterRequest extends Request {
+  body: {
+    user: string,
+    license: {
+      number: string,
+      expiryDate: Date,
+      state: string
+    },
+    vehicle: {
+      type: VehicleType,
+      make: string,
+      model: string,
+      year: number,
+      color: string,
+      licensePlate: string
+    },
+    availability: {
+      status: AvailabilityStatus,
+      lastStatusChange: Date,
+      schedule?: Array<{
+        day: number; // 0-6 for Sunday-Saturday
+        startTime: string;
+        endTime: string;
+      }>
+    },
+    documents: Array<{
+      type: DocumentType,
+      number: string,
+      url?: string,
+      uploadedAt?: Date,
+      expiryDate?: Date,
+      status: VerificationStatus,
+      rejectionReason?: string
+    }>,
+    accountDetails: {
+      bankName: string,
+      accountNumber: string,
+      ifscCode: string,
+      upiId: string
+    }
+  }
+}
+export interface DriverRegisterTypes {
+  user: string,
+  license: {
+    number: string,
+    expiryDate: Date,
+    state: string
+  },
+  vehicle: {
+    type: VehicleType,
+    make: string,
+    model: string,
+    year: number,
+    color: string,
+    licensePlate: string
+  },
+  availability: {
+    status: AvailabilityStatus,
+    lastStatusChange: Date,
+    schedule?: Array<{
+      day: number; // 0-6 for Sunday-Saturday
+      startTime: string;
+      endTime: string;
+    }>
+  },
+  documents: Array<{
+    type: DocumentType,
+    number: string,
+    url?: string,
+    uploadedAt?: Date,
+    expiryDate?: Date,
+    status: VerificationStatus,
+    rejectionReason?: string
+  }>,
+  accountDetails: {
+    bankName: string,
+    accountNumber: string,
+    ifscCode: string,
+    upiId: string
   }
 }
