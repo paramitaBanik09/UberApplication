@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { UserService } from "../../services/user-service/user-service";
-import { loginRequest, UserRegisterRequest } from "../../types";
+import { LoginRequest, UserRegisterRequest } from "../../types";
 import { config } from "../../config"
 
 const { logger } = config
@@ -24,7 +24,7 @@ export class UserController {
         }
     }
 
-    async login(req: loginRequest, res: Response) {
+    async login(req: LoginRequest, res: Response) {
         try {
             const result = await this.userService.login(req)
             res.status(StatusCodes.OK).json({

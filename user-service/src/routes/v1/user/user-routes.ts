@@ -3,7 +3,7 @@ import { config } from "../../../config";
 import { controllers } from "../../../controllers";
 import { repositories } from "../../../repositories";
 import { services } from "../../../services";
-import { loginRequest, UserRegisterRequest } from "../../../types";
+import { LoginRequest, UserRegisterRequest } from "../../../types";
 
 export const userRouter = Router();
 const { UserController } = controllers
@@ -21,5 +21,5 @@ userRouter.post("/register", async (req: Request, res: Response) => {
 })
 
 userRouter.post("/login", async (req: Request, res: Response) => {
-  await userController.login(req as loginRequest, res)
+  await userController.login(req as LoginRequest, res)
 })

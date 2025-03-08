@@ -62,7 +62,8 @@ export enum DocumentType {
   VEHICLE_REGISTRATION = 'vehicle_registration',
   INSURANCE = 'insurance',
   PROFILE_PHOTO = 'profile_photo',
-  BACKGROUND_CHECK = 'background_check'
+  BACKGROUND_CHECK = 'background_check',
+  AADHAR_CARD = 'aadhar_card',
 }
 
 // Document verification status
@@ -199,9 +200,16 @@ export interface UserRegisterRequest extends Request {
   }
 }
 
-export interface loginRequest extends Request{
+export interface LoginRequest extends Request{
   body:{
     email: string,
     password: string
+  }
+}
+
+
+export interface DriverRegisterRequest extends Request{
+  body:{
+
   }
 }

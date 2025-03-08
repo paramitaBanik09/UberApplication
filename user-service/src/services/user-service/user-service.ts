@@ -4,7 +4,7 @@ import { Types } from "mongoose";
 import { config } from "../../config";
 import User from "../../models/user/user.model";
 import { UserRepo } from "../../repositories/user-repo/user-repo";
-import { loginRequest, UserRegisterRequest } from "../../types";
+import { LoginRequest, UserRegisterRequest } from "../../types";
 import { errorResponse, GlobalErrorHandler } from "../../utils";
 import { errorStructure } from "../../utils/Helper/helperFunction";
 
@@ -44,7 +44,7 @@ export class UserService {
         }
     }
 
-    async login(req: loginRequest) {
+    async login(req: LoginRequest) {
         try {
             const { email, password } = req?.body
             if (!email || !password) {
