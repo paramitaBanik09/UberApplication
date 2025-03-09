@@ -38,9 +38,9 @@ const userSchema = new Schema({
    // select: false // Don't return password by default in queries
   },
   [USER_FIELDS.ROLE]: { 
-    type: String, 
+    type: [String], 
     enum: [UserRole.RIDER, UserRole.DRIVER], 
-    default: UserRole.RIDER 
+    default: [UserRole.RIDER] 
   },
   [USER_FIELDS.IS_ACTIVE]: {
     type: Boolean,

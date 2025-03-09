@@ -1,10 +1,11 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../../models/user/user.model";
-import { DriverRegisterTypes } from "../../types";
+import { DriverRegisterTypes, UserRole } from "../../types";
 import { GlobalErrorHandler } from "../../utils";
 import { errorStructure } from "../../utils/Helper/helperFunction";
 import Driver from "../../models/driver/driver.model";
 import { config } from "../../config";
+import mongoose from "mongoose";
 const { logger } = config
 
 export class DriverRepo {
@@ -33,7 +34,7 @@ export class DriverRepo {
       logger.error("License plate required", vehicle);
       throw new GlobalErrorHandler(errorStructure("License plate required", StatusCodes.BAD_REQUEST, "License plate required", {}));
     }
-    
+
     const driver = new Driver({
       user,
       vehicle,
@@ -45,4 +46,128 @@ export class DriverRepo {
     logger.info("Driver creation in process", driver);
     return await driver.save();
   }
+
+  async findNearbyDrivers(location: [number, number], userId: string) {
+    logger.info("Finding nearby drivers in repository layer");
+    const [lng, lat] = location
+    /*  const nearbyDrivers = await User.find({
+       location: {
+         $near: {
+           $geometry: {
+             type: "Point",
+             coordinates: [lng, lat]
+           },
+           $maxDistance: 1000
+         }
+       },
+       role: "driver" ,
+       _id: { $ne: userId }
+     },{
+       password: 0,
+       __v: 0,
+       _id: 0,
+       role:0,
+       verificationStatus: 0,
+       location: 0,
+       createdAt: 0,
+       updatedAt: 0,
+     }) */
+    /* const nearbyDrivers = await User.aggregate([
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [lng, lat],
+          },
+          distanceField: "distance",
+          maxDistance: 1000,
+          spherical: true,
+          query: {
+            role: UserRole.DRIVER,
+            _id: { $ne: new mongoose.Types.ObjectId(userId) }
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: 'Driver',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'driverDetails'
+        }
+      },
+      {
+        $project: {
+          password: 0,
+          __v: 0,
+          verificationStatus: 0,
+          location: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          
+        }
+      }
+    ]) */
+    const nearbyDrivers = await User.aggregate([
+      //all users who are within 1km from user's current location
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [lng, lat],
+          },
+          distanceField: "distance",
+          maxDistance: 1000,
+          /* spherical: true, */
+        }
+      },
+      // here we are joining user table with driver table to get all the details of the driver
+      {
+        $lookup: {
+          from: 'drivers',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'driverDetails'
+        }
+      },
+      {
+        $match: {
+          "driverDetails.availability.status": "online",
+          _id: { $ne: new mongoose.Types.ObjectId(userId) }
+        }
+      },
+      {
+        $project: {
+          password: 0,
+          _id :0,
+          role:0,
+          verificationStatus:0,
+          location:0,
+          createdAt:0,
+          updatedAt:0,
+          __v:0,
+          "driverDetails._id":0,
+          "driverDetails.user":0,
+          "driverDetails.availability":0,
+          "driverDetails.documents":0,
+          "driverDetails.accountDetails":0,
+          "driverDetails.stats":0,
+          "driverDetails.earnings":0,
+          "driverDetails.createdAt":0,
+          "driverDetails.updatedAt":0,
+          "driverDetails.license.expiryDate":0,
+          "driverDetails.license.state":0,
+          "driverDetails.vehicle.make":0,
+          "driverDetails.vehicle.color":0,
+          "driverDetails.vehicle.year":0,
+          "driverDetails.ratings.count":0,
+          "driverDetails.ratings.reviews":0,
+          "driverDetails.serviceAreas":0,
+          "driverDetails.__v":0,
+        }
+      }
+    ])
+    return nearbyDrivers
+  }
+
 }

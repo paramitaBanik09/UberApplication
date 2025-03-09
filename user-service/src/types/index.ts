@@ -1,3 +1,4 @@
+
 import { Request } from "express";
 import { Document } from "mongoose";
 
@@ -53,7 +54,8 @@ export enum VehicleType {
   SUV = 'suv',
   HATCHBACK = 'hatchback',
   BIKE = 'bike',
-  AUTO = 'auto'
+  AUTO = 'auto',
+  TOTO = 'toto',
 }
 
 // Document types
@@ -289,4 +291,45 @@ export interface DriverRegisterTypes {
     ifscCode: string,
     upiId: string
   }
+}
+
+export enum locationType {
+  POINT = "Point"
+}
+export enum ModeOfPayment {
+  CASH = "cash",
+  CARD = "card",
+  UPI = "upi"
+}
+
+
+export interface RequestRideInput extends Request {
+  body: {
+    userId?: string;
+    pickupLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    dropOffLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    modeOfPayment: ModeOfPayment,
+    vehicleType: VehicleType,
+    messageForDriver: string
+  }
+}
+export interface RequestRideInputTypes {
+    pickupLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    dropOffLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    modeOfPayment: ModeOfPayment,
+    vehicleType: VehicleType,
+    messageForDriver: string
+  
 }

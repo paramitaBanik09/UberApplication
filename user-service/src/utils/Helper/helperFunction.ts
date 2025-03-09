@@ -1,6 +1,6 @@
 import { errorResponse, successResponse } from "../../utils";
 
-export function errorStructure(primaryMessage:string,statusCode:number,seondaryMessage:string,stack?:any){
+export function errorStructure(primaryMessage: string, statusCode: number, seondaryMessage: string, stack?: any) {
     errorResponse.message = primaryMessage
     errorResponse.statusCode = statusCode
     errorResponse.error.stack = {
@@ -12,7 +12,7 @@ export function errorStructure(primaryMessage:string,statusCode:number,seondaryM
 
 }
 
-export function successStructure(primaryMessage:string,statusCode:number,seondaryMessage:string,data?:any){
+export function successStructure(primaryMessage: string, statusCode: number, seondaryMessage: string, data?: any) {
     successResponse.message = primaryMessage
     successResponse.statusCode = statusCode
     successResponse.data = {
@@ -23,3 +23,6 @@ export function successStructure(primaryMessage:string,statusCode:number,seondar
     return successResponse
 
 }
+
+
+
