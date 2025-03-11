@@ -113,14 +113,14 @@ export class UserService {
 
     async requestRide(req: RequestRideInput) {
         logger.info("Inside User Request Ride Service")
-        const { pickupLocation, dropOffLocation, messageForDriver = "", modeOfPayment, vehicleType, userId = "67cd4ccd12b4ac047063d9e5" } = req.body
-        if (!pickupLocation || !dropOffLocation || !modeOfPayment || !vehicleType) {
+        const { pickupLocation,requestId, dropOffLocation, messageForDriver = "", modeOfPayment, vehicleType, userId = "67cd4ccd12b4ac047063d9e5" } = req.body
+        if (!pickupLocation || !dropOffLocation || !modeOfPayment || !vehicleType || !requestId) {
             throw new GlobalErrorHandler(errorStructure("Please enter all the mandatory fields to request a ride", StatusCodes.BAD_REQUEST, "Bad user Request"))
         }
         try {
             const calculatedDistance = this.calculateService.calculateDistanceInKm(pickupLocation?.coordinates, dropOffLocation?.coordinates)
             const calculatedFare = this.calculateService.calculateFare(calculatedDistance, vehicleType)
-            return this.userRepo.requestRide(req?.body, calculatedFare, userId)
+            return this.userRepo.requestRide(req?.body, calculatedFare, userId,requestId)
         } catch (error) {
             throw new GlobalErrorHandler(errorStructure(error?.message ?? "Internal ServerError", error?.statusCodes ?? StatusCodes?.INTERNAL_SERVER_ERROR, error?.message ?? "Internal ServerError"))
         }

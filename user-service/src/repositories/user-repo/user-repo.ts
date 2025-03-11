@@ -34,7 +34,7 @@ export class UserRepo {
         return user
     }
 
-    async requestRide(req: RequestRideInputTypes, fare: number, userId: string) {
+    async requestRide(req: RequestRideInputTypes, fare: number, userId: string, requestId: string) {
         logger.info("Inside User Request Ride Repository")
         const { pickupLocation } = req
         const nearbyDrivers = await this?.driverRepo?.findNearbyDrivers(pickupLocation?.coordinates, userId)

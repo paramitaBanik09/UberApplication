@@ -34,6 +34,16 @@ const RideDetailsSchema = new Schema({
       required: true,
     },
   },
+  requestId: {
+    type: String,
+    required: true,
+    unique: true // This ensures uniqueness for idempotency
+  },
+  status: {
+    type: String,
+    enum: ['PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'COMPLETED'],
+    default: 'PENDING'
+  },
   paymentMode: {
     type: ModeOfPayment,
     required: true

@@ -1,4 +1,3 @@
-
 import { Request } from "express";
 import { Document } from "mongoose";
 
@@ -316,7 +315,8 @@ export interface RequestRideInput extends Request {
     },
     modeOfPayment: ModeOfPayment,
     vehicleType: VehicleType,
-    messageForDriver: string
+    messageForDriver: string,
+    requestId: string
   }
 }
 export interface RequestRideInputTypes {
@@ -330,6 +330,6 @@ export interface RequestRideInputTypes {
     },
     modeOfPayment: ModeOfPayment,
     vehicleType: VehicleType,
-    messageForDriver: string
-  
+    messageForDriver: string,
+    requestId: string
 }
