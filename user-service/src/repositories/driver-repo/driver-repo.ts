@@ -47,7 +47,7 @@ export class DriverRepo {
     return await driver.save();
   }
 
-  async findNearbyDrivers(location: [number, number], userId: string) {
+  async findNearbyDrivers(location: [number, number], userId: string, vehicleType:string) {
     logger.info("Finding nearby drivers in repository layer");
     const [lng, lat] = location
     /*  const nearbyDrivers = await User.find({
@@ -133,7 +133,8 @@ export class DriverRepo {
       {
         $match: {
           "driverDetails.availability.status": "online",
-          _id: { $ne: new mongoose.Types.ObjectId(userId) }
+          _id: { $ne: new mongoose.Types.ObjectId(userId) },
+          "driverDetails.vehicle.type": vehicleType?.toLowerCase()
         }
       },
       {
@@ -169,5 +170,30 @@ export class DriverRepo {
     ])
     return nearbyDrivers
   }
+  async findCurrentLocationOfDriver(userIdOfDriver:string){
+    const userProfile = await Driver.aggregate([{
+      $lookup:{
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+      }
+    },
+      {
+        $match: {
+          "userDetails._id": { $eq: new mongoose.Types.ObjectId(userIdOfDriver) }
+        }
+      }
+  ])
+  console.log(userProfile)
+  return userProfile
+  }
 
+  async findDriverByDriverID(driverID:string){
+    const findDriver = await Driver.findById(driverID)
+    if(!findDriver){
+      throw new GlobalErrorHandler(errorStructure("Invalid driver ID",StatusCodes.CONFLICT,"Invalid driver ID"))
+    }
+    return findDriver
+  }
 }

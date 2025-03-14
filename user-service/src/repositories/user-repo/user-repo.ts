@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { config } from "../../config";
 import User from "../../models/user/user.model";
 import { RequestRideInputTypes, UserRegisterRequest } from "../../types";
@@ -26,6 +27,8 @@ export class UserRepo {
 
     async findUserById(userId: string) {
         logger.info("Inside User Find Method in repository")
+
+        console.log("userId",userId,"type of user ID:",typeof new Types.ObjectId(userId))
         const user = await User.findById(userId)
         if (!user) {
             logger.error("User not found", userId)
@@ -36,11 +39,13 @@ export class UserRepo {
 
     async requestRide(req: RequestRideInputTypes, fare: number, userId: string, requestId: string) {
         logger.info("Inside User Request Ride Repository")
-        const { pickupLocation } = req
-        const nearbyDrivers = await this?.driverRepo?.findNearbyDrivers(pickupLocation?.coordinates, userId)
+        const { pickupLocation,vehicleType } = req
+        const nearbyDrivers = await this?.driverRepo?.findNearbyDrivers(pickupLocation?.coordinates, userId, vehicleType)
         return {
             nearbyDrivers,
             fare
         }
     }
+
+    
 }
