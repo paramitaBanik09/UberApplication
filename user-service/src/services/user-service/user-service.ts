@@ -9,6 +9,7 @@ import { errorResponse, GlobalErrorHandler } from "../../utils";
 import { errorStructure } from "../../utils/Helper/helperFunction";
 import { CalculateService } from "../../advice/CalculateService";
 import { DriverRepo } from "../../repositories/driver-repo/driver-repo";
+import opencage from "opencage-api-client"
 
 const { server_config, logger } = config
 const { JWT_ACCESS_TOKEN_EXPIRATION, JWT_SECRET_KEY } = server_config
@@ -113,14 +114,14 @@ export class UserService {
 
     async requestRide(req: RequestRideInput) {
         logger.info("Inside User Request Ride Service")
-        const { pickupLocation,requestId, dropOffLocation, messageForDriver = "", modeOfPayment, vehicleType, userId = "67cd4ccd12b4ac047063d9e5" } = req.body
+        const { pickupLocation, requestId, dropOffLocation, messageForDriver = "", modeOfPayment, vehicleType, userId = "67cd4ccd12b4ac047063d9e5" } = req.body
         if (!pickupLocation || !dropOffLocation || !modeOfPayment || !vehicleType || !requestId) {
             throw new GlobalErrorHandler(errorStructure("Please enter all the mandatory fields to request a ride", StatusCodes.BAD_REQUEST, "Bad user Request"))
         }
         try {
             const calculatedDistance = this.calculateService.calculateDistanceInKm(pickupLocation?.coordinates, dropOffLocation?.coordinates)
             const calculatedFare = this.calculateService.calculateFare(calculatedDistance, vehicleType)
-            return this.userRepo.requestRide(req?.body, calculatedFare, userId,requestId)
+            return this.userRepo.requestRide(req?.body, calculatedFare, userId, requestId)
         } catch (error) {
             throw new GlobalErrorHandler(errorStructure(error?.message ?? "Internal ServerError", error?.statusCodes ?? StatusCodes?.INTERNAL_SERVER_ERROR, error?.message ?? "Internal ServerError"))
         }
@@ -160,5 +161,30 @@ export class UserService {
         } catch (error) {
             throw new GlobalErrorHandler(errorStructure(error?.message ?? "Internal ServerError", error?.statusCodes ?? StatusCodes?.INTERNAL_SERVER_ERROR, error?.message ?? "Internal ServerError"))
         }
+    }
+
+    async getAddressFromCoordinets(lon: number, lat: number) {
+
+        opencage
+            .geocode({ q: `${lon},${lat}`, language: 'en' })
+            .then((data) => {
+                console.log("data", JSON.stringify(data));
+                if (data.status.code === 200 && data.results.length > 0) {
+                    const place = data.results[0];
+                    console.log(place.formatted);
+                    console.log(place.components.road);
+                    console.log(place.annotations.timezone.name);
+                } else {
+                    console.log('status', data.status.message);
+                    console.log('total_results', data.total_results);
+                }
+            })
+            .catch((error) => {
+                console.log('error', error.message);
+                if (error.status.code === 402) {
+                    console.log('hit free trial daily limit');
+                    console.log('become a customer: https://opencagedata.com/pricing');
+                }
+            });
     }
 }

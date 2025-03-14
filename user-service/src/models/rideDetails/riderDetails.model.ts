@@ -1,4 +1,4 @@
-import { Schema, Types } from "mongoose"
+import { model, Schema, Types } from "mongoose"
 import { GEO_JSON, ModeOfPayment } from "../../types"
 
 const RideDetailsSchema = new Schema({
@@ -18,7 +18,7 @@ const RideDetailsSchema = new Schema({
   },
   time: {
     type: Date,
-    required: true
+    default: Date.now
   },
   pickupLocation: {
     type: { type: String, enum: [GEO_JSON.POINT], default: GEO_JSON.POINT },
@@ -45,7 +45,9 @@ const RideDetailsSchema = new Schema({
     default: 'PENDING'
   },
   paymentMode: {
-    type: ModeOfPayment,
-    required: true
+    type: String,
+    enum: ModeOfPayment, 
   }
 })
+
+export const Ride = model("Ride", RideDetailsSchema);

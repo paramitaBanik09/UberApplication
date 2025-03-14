@@ -333,3 +333,42 @@ export interface RequestRideInputTypes {
     messageForDriver: string,
     requestId: string
 }
+
+export interface AcceptRideRequest extends Request{
+  body:{
+    userIdOfDriver:string,
+    pickupLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    dropOffLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    fare:number,
+    vehicleType:string,
+    totalDistance:number, //from pickup to drop location
+    distanceFromUser:number
+  }
+}
+
+export interface rideDetailsInput extends Request{
+  body:{
+    requestId:string,
+    rider:string,
+    driver:string,
+    pickupLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    dropOffLocation: {
+      type: locationType,
+      coordinates: [number, number]
+    },
+    fare:number,
+    vehicleType:string,
+    totalDistance:number,
+    driverRating:number,
+    paymentMode:ModeOfPayment
+  }
+}

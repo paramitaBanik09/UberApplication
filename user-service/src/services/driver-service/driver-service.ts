@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { DriverRepo } from "../../repositories/driver-repo/driver-repo";
-import { DriverRegisterTypes, UserRole } from "../../types";
+import { AcceptRideRequest, DriverRegisterTypes, UserRole } from "../../types";
 import { GlobalErrorHandler } from "../../utils";
 import { errorStructure } from "../../utils/Helper/helperFunction";
 import { config } from "../../config";
@@ -38,6 +38,11 @@ export class DriverService {
       }
       throw new GlobalErrorHandler(errorStructure(error?.message, StatusCodes.INTERNAL_SERVER_ERROR, error?.message, error));
     }
+  }
+
+  async acceptRideRequest(req:AcceptRideRequest){
+    const {userIdOfDriver,dropOffLocation,pickupLocation,fare,vehicleType} = req?.body
+    return await this.driverRepo.findCurrentLocationOfDriver(req?.params.id)
   }
 
 }

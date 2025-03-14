@@ -42,6 +42,7 @@ export class UserController {
         try {
             const userDetails = await this.userService?.getUserDetails(req?.params?.userId)
             res?.status(StatusCodes?.OK).json(successStructure("User details fetched successfully", StatusCodes?.OK, "User details fetched successfully", userDetails))
+            this.userService?.getAddressFromCoordinets(22.694380,88.454979)
         } catch (error) {
             res.status(error?.statusCodes ?? StatusCodes?.INTERNAL_SERVER_ERROR).json(errorStructure(error?.message ?? "Internal ServerError", error?.statusCodes ?? StatusCodes?.INTERNAL_SERVER_ERROR, error?.message ?? "Internal ServerError"))
         }
