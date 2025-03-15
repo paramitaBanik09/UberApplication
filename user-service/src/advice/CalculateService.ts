@@ -4,7 +4,7 @@ import { ICalculateService } from "./ICalculateSetrvice";
 export class CalculateService implements ICalculateService {
   calculateDistanceInKm(source: [number, number], destination: [number, number]) {
     const earthRadius = 6371; // Radius of the Earth in kilometers
-    const toRadians = (degrees: number) => degrees * Math.PI / 180;
+    const toRadians = (degrees: number) => degrees * Math.PI / 180 
     const [pickupLong, pickupLat] = source
     const [dropLong, dropLat] = destination
 
